@@ -18,8 +18,8 @@ import os
 c = wda.Client()
 
 # 百度OCR API ，在 https://cloud.baidu.com/product/ocr 上注册新建应用即可
-api_key = ''
-api_secret = ''
+api_key = 'zcB5pMDj6mxLSpvbpSrovlvT'
+api_secret = 'Y1V9KdBQOdcEuGfluz5OnQuoWK8eKQgs'
 
 
 

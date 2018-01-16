@@ -6,31 +6,41 @@
 
 import requests
 import webbrowser
-import urllib.parse
-
+import urllib
+import re
+import Global as g
 # # 颜色兼容Win 10
 from colorama import init,Fore
 init()
 
+
+
+
 def open_webbrowser(question):
-    webbrowser.open('https://baidu.com/s?wd=' + urllib.parse.quote(question))
+    print(urllib.quote(question.encode('utf8')))
+    webbrowser.open('https://wap.baidu.com/s?wd=' + urllib.quote(question.encode('utf8')))
+    #webbrowser.open('https://www.baidu.com/' )
 
 def open_webbrowser_count(question,choices):
     print('\n-- 方法2： 题目+选项搜索结果计数法 --\n')
-    print('Question: ' + question)
-    if '不是' in question:
-        print('**请注意此题为否定题,选计数最少的**')
+    print('Question: ' + question.encode('utf8'))
+    for nokey in g.opposite:
+        if nokey in (question.encode('utf8')):
+            g.opp=False
+            print('**请注意此题为否定题,选计数最少的**')
 
     counts = []
     for i in range(len(choices)):
         # 请求
         req = requests.get(url='http://www.baidu.com/s', params={'wd': question + choices[i]})
-        content = req.text
+        content = req.text.encode('utf8')
+        #print (type(content))
         index = content.find('百度为您找到相关结果约') + 11
         content = content[index:]
         index = content.find('个')
         count = content[:index].replace(',', '')
-        counts.append(count)
+        count = re.sub("\D", "", count)
+        counts.append(int(count))
         #print(choices[i] + " : " + count)
     output(choices, counts)
 
@@ -38,14 +48,17 @@ def count_base(question,choices):
     print('\n-- 方法3： 题目搜索结果包含选项词频计数法 --\n')
     # 请求
     req = requests.get(url='http://www.baidu.com/s', params={'wd':question})
-    content = req.text
+    content = req.text.encode('utf8')
     #print(content)
     counts = []
     print('Question: '+question)
-    if '不是' in question:
-        print('**请注意此题为否定题,选计数最少的**')
+    #print(choices[0].encode('utf8'))
+    for nokey in g.opposite:
+        if nokey in (question.encode('utf8')):
+            g.opp = False
+            print('**请注意此题为否定题,选计数最少的**')
     for i in range(len(choices)):
-        counts.append(content.count(choices[i]))
+        counts.append(content.count((choices[i].encode('utf8'))))
         #print(choices[i] + " : " + str(counts[i]))
     output(choices, counts)
 
@@ -63,16 +76,23 @@ def output(choices, counts):
         print(Fore.RED + "高低计数相等此方法失效！" + Fore.RESET)
         return
 
+    #print(choices[0].encode('utf8'))
     for i in range(len(choices)):
-        print()
         if i == index_max:
             # 绿色为计数最高的答案
-            print(Fore.GREEN + "{0} : {1} ".format(choices[i], counts[i]) + Fore.RESET)
+            if(g.opp == True):
+                print(Fore.GREEN + "{0} : {1} ".format(choices[i].encode('utf8'), counts[i]) + Fore.RESET)
+            else:
+                print("{0} : {1}".format(choices[i].encode('utf8'), counts[i]))
         elif i == index_min:
             # 红色为计数最低的答案
-            print(Fore.MAGENTA + "{0} : {1}".format(choices[i], counts[i]) + Fore.RESET)
+            if(g.opp==False):
+                print(Fore.MAGENTA + "{0} : {1}".format(choices[i].encode('utf8'), counts[i]) + Fore.RESET)
+            else:
+                print("{0} : {1}".format(choices[i].encode('utf8'), counts[i]))
         else:
-            print("{0} : {1}".format(choices[i], counts[i]))
+            print("{0} : {1}".format(choices[i].encode('utf8'), counts[i]))
+    opp=True
 
 
 def run_algorithm(al_num, question, choices):

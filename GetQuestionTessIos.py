@@ -9,7 +9,7 @@ from PIL import Image
 from common import  ocr, methods
 
 
-c = wda.Client()
+c = wda.Client('http://169.254.76.111:8100')
 
 
 while True:
@@ -30,9 +30,11 @@ while True:
     methods.run_algorithm(1, question, choices)
     # 用选项在问题页面中计数出现词频方法
     methods.run_algorithm(2, question, choices)
+    try:
+        go = input('输入回车继续运行,输入 n 回车结束运行: ')
+        if go == 'n':
+            break
+    except:
+        print('------------------------')
 
-    go = input('输入回车继续运行,输入 n 回车结束运行: ')
-    if go == 'n':
-        break
-
-    print('------------------------')
+    #print('------------------------')
