@@ -51,11 +51,11 @@ def ocr_img(image):
     #question_im = image.crop((75, 315, 1167, 789)) # iPhone 7P
     
     #西瓜视频
-    question_im = image.crop((50, 200, 718, 420))
-    choices_im = image.crop((75, 430, 718, 850))
+    #question_im = image.crop((50, 200, 718, 420))
+    #choices_im = image.crop((75, 430, 718, 850))
     #芝士超人
-    #question_im = image.crop((100, 170, 700, 330))
-    #choices_im = image.crop((75, 350, 700, 720))
+    question_im = image.crop((100, 170, 700, 330))
+    choices_im = image.crop((75, 350, 700, 720))
 
 
 

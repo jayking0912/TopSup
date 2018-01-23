@@ -17,9 +17,10 @@ init()
 
 
 def open_webbrowser(question):
-    print(urllib.quote(question.encode('utf8')))
-    webbrowser.open('https://wap.baidu.com/s?wd=' + urllib.quote(question.encode('utf8')))
+    #print(urllib.quote(question.encode('utf8')))
+    #webbrowser.open('https://wap.baidu.com/s?wd=' + urllib.quote(question.encode('utf8')))
     #webbrowser.open('https://www.baidu.com/' )
+    return
 
 def open_webbrowser_count(question,choices):
     print('\n-- 方法2： 题目+选项搜索结果计数法 --\n')
@@ -62,15 +63,24 @@ def count_base(question,choices):
         #print(choices[i] + " : " + str(counts[i]))
     output(choices, counts)
 
+    print(urllib.quote(question.encode('utf8')))
+    webbrowser.open('https://wap.baidu.com/s?wd=' + urllib.quote(question.encode('utf8')))
+
 def output(choices, counts):
     counts = list(map(int, counts))
     #print(choices, counts)
-
+    #print counts
     # 计数最高
-    index_max = counts.index(max(counts))
+    if(len(counts)<=0):
+        index_max =0
+    else:
+        index_max = counts.index(max(counts))
 
     # 计数最少
-    index_min = counts.index(min(counts))
+    if(len(counts)<=0):
+        index_min = 0
+    else:
+        index_min = counts.index(min(counts))
 
     if index_max == index_min:
         print(Fore.RED + "高低计数相等此方法失效！" + Fore.RESET)

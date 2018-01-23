@@ -9,7 +9,7 @@ from PIL import Image
 from common import  ocr, methods
 
 
-c = wda.Client('http://169.254.76.111:8100')
+c = wda.Client('http://169.254.232.184:8100')
 
 
 while True:
